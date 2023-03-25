@@ -11,6 +11,43 @@ export const mockDataTeam = [
   },
 ];
 
+export const mockDataClients = [
+  {
+    id: 1,
+    nit: "12345678",
+    name: "Gerson Ortiz",
+    email: "jonsnow@gmail.com",
+    phone: "(665)121-5454",
+    address: "Guatemala",
+  },
+];
+
+export const mockDataProviders = [
+  {
+    id: 1,
+    nit: "12345678",
+    name: "Gerson Ortiz",
+    email: "gerson@gmail.com",
+    phone: "(665)121-5454",
+    address: "Guatemala",
+    status: "Activo",
+  },
+];
+
+export const mockDataProducts = [
+  {
+    id: 1,
+    codigo: "123456789",
+    description: "Cuaderno",
+    sale_price: "15.5",
+    shopping_price: "10.25",
+    category: "Utiles",
+    provider: "Otro",
+    status: "Activo",
+  },
+];
+
+
 export const mockDataContacts = [
   {
     id: 1,

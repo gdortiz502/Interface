@@ -1,80 +1,71 @@
 import { Box, Button } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
-import { mockDataContacts } from "../../data/mockData";
+import { mockDataProducts } from "../../data/mockData";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
-import { Add, DownloadDoneOutlined } from "@mui/icons-material";
+import { Add } from "@mui/icons-material";
 
-const Contacts = () => {
+const Inventario = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
-    { field: "registrarId", headerName: "Codigo" },
+    { field: "codigo", headerName: "CODIGO" },
     {
-      field: "name",
-      headerName: "Nombre",
+      field: "description",
+      headerName: "Descripcion",
       flex: 1,
       cellClassName: "name-column--cell",
     },
     {
-      field: "age",
-      headerName: "Edad",
+      field: "shopping_price",
+      headerName: "Precio de Compra",
       type: "number",
       headerAlign: "left",
       align: "left",
-    },
-    {
-      field: "phone",
-      headerName: "Numero de Telefono",
       flex: 1,
     },
     {
-      field: "email",
-      headerName: "Correo",
+      field: "sale_price",
+      headerName: "Precio de Venta",
+      type: "number",
+      headerAlign: "left",
+      align: "left",
       flex: 1,
     },
     {
-      field: "address",
-      headerName: "Direccion",
+      field: "category",
+      headerName: "Categoria",
       flex: 1,
     },
     {
-      field: "city",
-      headerName: "Ciudad",
-      flex: 1,
+      field: "status",
+      headerName: "Estatus",
+      flex: 2,
     },
-    {
-      field: "zipCode",
-      headerName: "Codigo Postal",
-      flex: 1,
-    },
-    {
-      field: "actions",
-      headerName: "Acciones",
-      flex: 1,
-    }
   ];
 
   return (
     <Box m="20px">
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="CONTACTOS" subtitle="Bienvenido al modulo de contactos" />
+        <Header title="INVENTARIO" subtitle="Bienvenido al modulo de inventario" />
 
         <Box>
           <Button
+            href="/new_inventory"
             sx={{
               backgroundColor: colors.blueAccent[700],
               color: colors.grey[100],
               fontSize: "14px",
               fontWeight: "bold",
               padding: "10px 20px",
-            }}
+            }
+            }
           >
             <Add sx={{ mr: "10px" }} />
-            Nuevo Contacto
+            Nuevo Inventario
           </Button>
         </Box>
       </Box>
@@ -111,13 +102,12 @@ const Contacts = () => {
         }}
       >
         <DataGrid
-          rows={mockDataContacts}
+          rows={mockDataProducts}
           columns={columns}
-          components={{ Toolbar: GridToolbar }}
         />
       </Box>
     </Box>
   );
 };
 
-export default Contacts;
+export default Inventario;

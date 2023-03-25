@@ -1,18 +1,18 @@
 import { Box, Button } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
-import { mockDataContacts } from "../../data/mockData";
+import { mockDataClients } from "../../data/mockData";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
 import { Add, DownloadDoneOutlined } from "@mui/icons-material";
 
-const Contacts = () => {
+const Usuarios = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
-    { field: "registrarId", headerName: "Codigo" },
+    { field: "nit", headerName: "NIT" },
     {
       field: "name",
       headerName: "Nombre",
@@ -20,11 +20,12 @@ const Contacts = () => {
       cellClassName: "name-column--cell",
     },
     {
-      field: "age",
-      headerName: "Edad",
+      field: "email",
+      headerName: "Correo",
       type: "number",
       headerAlign: "left",
       align: "left",
+      flex: 2,
     },
     {
       field: "phone",
@@ -32,49 +33,31 @@ const Contacts = () => {
       flex: 1,
     },
     {
-      field: "email",
-      headerName: "Correo",
-      flex: 1,
-    },
-    {
       field: "address",
       headerName: "Direccion",
-      flex: 1,
+      flex: 2,
     },
-    {
-      field: "city",
-      headerName: "Ciudad",
-      flex: 1,
-    },
-    {
-      field: "zipCode",
-      headerName: "Codigo Postal",
-      flex: 1,
-    },
-    {
-      field: "actions",
-      headerName: "Acciones",
-      flex: 1,
-    }
   ];
 
   return (
     <Box m="20px">
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="CONTACTOS" subtitle="Bienvenido al modulo de contactos" />
+        <Header title="USUARIOS" subtitle="Bienvenido al modulo de usuarios" />
 
         <Box>
           <Button
+            href="/new_user"
             sx={{
               backgroundColor: colors.blueAccent[700],
               color: colors.grey[100],
               fontSize: "14px",
               fontWeight: "bold",
               padding: "10px 20px",
-            }}
+            }
+            }
           >
             <Add sx={{ mr: "10px" }} />
-            Nuevo Contacto
+            Nuevo Usuario
           </Button>
         </Box>
       </Box>
@@ -111,13 +94,12 @@ const Contacts = () => {
         }}
       >
         <DataGrid
-          rows={mockDataContacts}
+          rows={mockDataClients}
           columns={columns}
-          components={{ Toolbar: GridToolbar }}
         />
       </Box>
     </Box>
   );
 };
 
-export default Contacts;
+export default Usuarios;

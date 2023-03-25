@@ -15,6 +15,21 @@ import Geography from "./scenes/geography";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
 import Calendar from "./scenes/calendar/calendar";
+import Clients from "./scenes/clients";
+import New_Client from "./scenes/clients/new_client";
+import Providers from "./scenes/providers";
+import New_Provider from "./scenes/providers/new_provider";
+import Products from "./scenes/products";
+import New_product from "./scenes/products/new_product";
+import { Inventory } from "@mui/icons-material";
+import New_inventory from "./scenes/inventory/new_inventory";
+import Inventario from "./scenes/inventory";
+import Bodega from "./scenes/warehouse";
+import New_warehouse from "./scenes/warehouse/new_warehouse";
+import Usuarios from "./scenes/users";
+import New_user from "./scenes/users/new_user";
+import Shopping from "./scenes/shopping";
+import New_shopping from "./scenes/shopping/new_shopping";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -30,16 +45,21 @@ function App() {
             <Topbar setIsSidebar={setIsSidebar} />
             <Routes>
               <Route path="/" element={<Dashboard />} />
-              <Route path="/team" element={<Team />} />
-              <Route path="/contacts" element={<Contacts />} />
-              <Route path="/invoices" element={<Invoices />} />
+              <Route path="/clients" element={<Clients />} />
+              <Route path="/new_client" element={<New_Client />} />
+              <Route path="/providers" element={<Providers />} />
+              <Route path="/new_provider" element={<New_Provider />} />
+              <Route path="/products" element={<Products />} />
+              <Route path="/new_product" element={<New_product />} />
+              <Route path="/inventory" element={<Inventario />} />
+              <Route path="/new_inventory" element={<New_inventory />} />
+              <Route path="/warehouse" element={<Bodega />} />
+              <Route path="/new_warehouse" element={<New_warehouse />} />
+              <Route path="/users" element={<Usuarios />} />
+              <Route path="/new_user" element={<New_user />} />
+              <Route path="/shopping" element={<Shopping />} />
+              <Route path="/new_shopping" element={<New_shopping />} />
               <Route path="/form" element={<Form />} />
-              <Route path="/bar" element={<Bar />} />
-              <Route path="/pie" element={<Pie />} />
-              <Route path="/line" element={<Line />} />
-              <Route path="/faq" element={<FAQ />} />
-              <Route path="/calendar" element={<Calendar />} />
-              <Route path="/geography" element={<Geography />} />
             </Routes>
           </main>
         </div>

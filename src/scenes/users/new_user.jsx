@@ -3,8 +3,14 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
+import { useTheme } from "@mui/material";
+import { Add, ArrowBack, DownloadDoneOutlined } from "@mui/icons-material";
+import { tokens } from "../../theme";
 
-const Form = () => {
+const New_user = () => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
   const handleFormSubmit = (values) => {
@@ -13,7 +19,26 @@ const Form = () => {
 
   return (
     <Box m="20px">
-      <Header title="EDITAR PERFIL" subtitle="Editar usuario" />
+      <Box display="flex" justifyContent="space-between" alignItems="center">
+        <Header title="NUEVO USUARIO" subtitle="Bienvenido al modulo de usuarios" />
+
+        <Box>
+          <Button
+            href="/users"
+            sx={{
+              backgroundColor: colors.blueAccent[700],
+              color: colors.grey[100],
+              fontSize: "14px",
+              fontWeight: "bold",
+              padding: "10px 20px",
+            }
+            }
+          >
+            <ArrowBack sx={{ mr: "10px" }} />
+            REGRESAR
+          </Button>
+        </Box>
+      </Box>
 
       <Formik
         onSubmit={handleFormSubmit}
@@ -41,7 +66,7 @@ const Form = () => {
                 fullWidth
                 variant="filled"
                 type="text"
-                label="First Name"
+                label="NIT"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.firstName}
@@ -54,7 +79,7 @@ const Form = () => {
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Last Name"
+                label="NOMBRE"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.lastName}
@@ -67,33 +92,33 @@ const Form = () => {
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Email"
+                label="CORREO"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.email}
                 name="email"
                 error={!!touched.email && !!errors.email}
                 helperText={touched.email && errors.email}
-                sx={{ gridColumn: "span 4" }}
+                sx={{ gridColumn: "span 2" }}
               />
               <TextField
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Contact Number"
+                label="TELEFONO"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.contact}
                 name="contact"
                 error={!!touched.contact && !!errors.contact}
                 helperText={touched.contact && errors.contact}
-                sx={{ gridColumn: "span 4" }}
+                sx={{ gridColumn: "span 2" }}
               />
               <TextField
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Address 1"
+                label="DIRECCION"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.address1}
@@ -102,23 +127,10 @@ const Form = () => {
                 helperText={touched.address1 && errors.address1}
                 sx={{ gridColumn: "span 4" }}
               />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Address 2"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.address2}
-                name="address2"
-                error={!!touched.address2 && !!errors.address2}
-                helperText={touched.address2 && errors.address2}
-                sx={{ gridColumn: "span 4" }}
-              />
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
-                Editar Perfil
+                CREAR NUEVO PROVEEDOR
               </Button>
             </Box>
           </form>
@@ -132,7 +144,7 @@ const phoneRegExp =
   /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
 
 const checkoutSchema = yup.object().shape({
-  firstName: yup.string().required("required"),
+  firstName: yup.string().required("requerido"),
   lastName: yup.string().required("required"),
   email: yup.string().email("invalid email").required("required"),
   contact: yup
@@ -151,4 +163,4 @@ const initialValues = {
   address2: "",
 };
 
-export default Form;
+export default New_user;
