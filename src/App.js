@@ -30,6 +30,7 @@ import Usuarios from "./scenes/users";
 import New_user from "./scenes/users/new_user";
 import Shopping from "./scenes/shopping";
 import New_shopping from "./scenes/shopping/new_shopping";
+import Edit_Client from "./scenes/clients/edit_client";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -47,6 +48,7 @@ function App() {
               <Route path="/" element={<Dashboard />} />
               <Route path="/clients" element={<Clients />} />
               <Route path="/new_client" element={<New_Client />} />
+              <Route path="/edit_client/:id" element={<Edit_Client />} />
               <Route path="/providers" element={<Providers />} />
               <Route path="/new_provider" element={<New_Provider />} />
               <Route path="/products" element={<Products />} />
