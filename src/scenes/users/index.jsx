@@ -1,12 +1,12 @@
 import { Box, Button } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
-import { mockDataProviders } from "../../data/mockData";
+import { mockDataClients } from "../../data/mockData";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
-import { Add } from "@mui/icons-material";
+import { Add, DownloadDoneOutlined } from "@mui/icons-material";
 
-const Providers = () => {
+const Usuarios = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -37,21 +37,16 @@ const Providers = () => {
       headerName: "Direccion",
       flex: 2,
     },
-    {
-      field: "status",
-      headerName: "Estatus",
-      flex: 2,
-    },
   ];
 
   return (
     <Box m="20px">
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="PROVEEDORES" subtitle="Bienvenido al modulo de prveedores" />
+        <Header title="USUARIOS" subtitle="Bienvenido al modulo de usuarios" />
 
         <Box>
           <Button
-            href="/new_provider"
+            href="/new_user"
             sx={{
               backgroundColor: colors.blueAccent[700],
               color: colors.grey[100],
@@ -62,7 +57,7 @@ const Providers = () => {
             }
           >
             <Add sx={{ mr: "10px" }} />
-            Nuevo Proveedor
+            Nuevo Usuario
           </Button>
         </Box>
       </Box>
@@ -99,7 +94,7 @@ const Providers = () => {
         }}
       >
         <DataGrid
-          rows={mockDataProviders}
+          rows={mockDataClients}
           columns={columns}
         />
       </Box>
@@ -107,4 +102,4 @@ const Providers = () => {
   );
 };
 
-export default Providers;
+export default Usuarios;
