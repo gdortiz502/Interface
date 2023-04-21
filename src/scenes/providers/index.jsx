@@ -62,7 +62,7 @@ const Providers = () => {
             }
           >
             <Add sx={{ mr: "10px" }} />
-            Nuevo Proveedor
+            Crear Proveedor
           </Button>
         </Box>
       </Box>
