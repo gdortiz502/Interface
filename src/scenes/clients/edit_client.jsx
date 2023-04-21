@@ -25,7 +25,7 @@ const Edit_Client = () => {
 
   function handleSubmit(event){
     event.preventDefault();
-    axios.put('http://localhost:8081/update/'+id, {nit, nombre, correo, telefono, direccion})
+    axios.put('http://localhost:8081/update/clientes/'+id, {nit, nombre, correo, telefono, direccion})
     .then(res => {
       console.log(res);
       navigate("/clients");
@@ -41,7 +41,7 @@ const Edit_Client = () => {
   const [clients, setClient] = useState([])
 
   useEffect(() => {
-    axios.get('http://localhost:8081/clientes/' + id)
+    axios.get('http://localhost:8081/get/clientes/' + id)
     .then(res => setClient(res.data))
     .catch(err => console.log(err));
   }, [])

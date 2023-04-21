@@ -23,7 +23,7 @@ const New_Client = () => {
 
   function handleSubmit(event){
     event.preventDefault();
-    axios.post('http://localhost:8081/create', {nit, nombre, correo, telefono, direccion})
+    axios.post('http://localhost:8081/create/clientes', {nit, nombre, correo, telefono, direccion})
     .then(res => {
       console.log(res);
       navigate("/clients");

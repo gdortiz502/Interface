@@ -13,14 +13,14 @@ const Clients = () => {
   const [clients, setClient] = useState([])
 
   useEffect(() => {
-    axios.get('http://localhost:8081/clientes/')
+    axios.get('http://localhost:8081/get/clientes')
     .then(res => setClient(res.data))
     .catch(err => console.log(err));
   }, [])
 
   const handleDelete = async(id) => {
     try {
-      await axios.delete('http://localhost:8081/delete/' + id)
+      await axios.delete('http://localhost:8081/delete/clientes/' + id)
       window.location.reload()
     }catch(err){
       console.log(err);
