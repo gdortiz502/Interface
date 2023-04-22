@@ -1,53 +1,36 @@
-import { Box, Button } from "@mui/material";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { tokens } from "../../theme";
-import { mockDataProviders } from "../../data/mockData";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
-import { Add } from "@mui/icons-material";
+import { Add, Delete, Edit } from "@mui/icons-material";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const Providers = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const columns = [
-    { field: "id", headerName: "ID", flex: 0.5 },
-    { field: "nit", headerName: "NIT" },
-    {
-      field: "name",
-      headerName: "Nombre",
-      flex: 1,
-      cellClassName: "name-column--cell",
-    },
-    {
-      field: "email",
-      headerName: "Correo",
-      type: "number",
-      headerAlign: "left",
-      align: "left",
-      flex: 2,
-    },
-    {
-      field: "phone",
-      headerName: "Numero de Telefono",
-      flex: 1,
-    },
-    {
-      field: "address",
-      headerName: "Direccion",
-      flex: 2,
-    },
-    {
-      field: "status",
-      headerName: "Estatus",
-      flex: 2,
-    },
-  ];
+  const [proveedores, setProveedor] = useState([])
+
+  useEffect(() => {
+    axios.get('http://localhost:8081/get/proveedores')
+    .then(res => setProveedor(res.data))
+    .catch(err => console.log(err));
+  }, [])
+
+  const handleDelete = async(id) => {
+    try {
+      await axios.delete('http://localhost:8081/delete/proveedores/' + id)
+      window.location.reload()
+    }catch(err){
+      console.log(err);
+    }
+  }
 
   return (
     <Box m="20px">
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="PROVEEDORES" subtitle="Bienvenido al modulo de prveedores" />
+        <Header title="PROVEEDORES" subtitle="Bienvenido al modulo de clientes" />
 
         <Box>
           <Button
@@ -66,42 +49,57 @@ const Providers = () => {
           </Button>
         </Box>
       </Box>
-      <Box
-        m="40px 0 0 0"
-        height="75vh"
-        sx={{
-          "& .MuiDataGrid-root": {
-            border: "none",
-          },
-          "& .MuiDataGrid-cell": {
-            borderBottom: "none",
-          },
-          "& .name-column--cell": {
-            color: colors.greenAccent[300],
-          },
-          "& .MuiDataGrid-columnHeaders": {
-            backgroundColor: colors.blueAccent[700],
-            borderBottom: "none",
-          },
-          "& .MuiDataGrid-virtualScroller": {
-            backgroundColor: colors.primary[400],
-          },
-          "& .MuiDataGrid-footerContainer": {
-            borderTop: "none",
-            backgroundColor: colors.blueAccent[700],
-          },
-          "& .MuiCheckbox-root": {
-            color: `${colors.greenAccent[200]} !important`,
-          },
-          "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-            color: `${colors.grey[100]} !important`,
-          },
-        }}
-      >
-        <DataGrid
-          rows={mockDataProviders}
-          columns={columns}
-        />
+      <Box>
+        <TableContainer>
+          <Table sx={{minWidth:650}} aria-label="a dense table">
+            <TableHead>
+              <TableRow>
+                <TableCell>ID</TableCell>
+                <TableCell>NIT</TableCell>
+                <TableCell>Nombre</TableCell>
+                <TableCell>Correo</TableCell>
+                <TableCell>Telefono</TableCell>
+                <TableCell>Direccion</TableCell>
+                <TableCell>Acciones</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {proveedores.map((row) => (
+                <TableRow
+                  key={row.nombre}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                    <TableCell>{row.id_proveedor}</TableCell>
+                    <TableCell>{row.nit}</TableCell>
+                    <TableCell>{row.nombre}</TableCell>
+                    <TableCell>{row.correo}</TableCell>
+                    <TableCell>{row.telefono}</TableCell>
+                    <TableCell>{row.direccion}</TableCell>
+                    <TableCell>
+                      <Button
+                        href= {`/edit_provider/${row.id_proveedor}`}
+                        sx={{
+                          backgroundColor: colors.greenAccent[700],
+                          color: colors.grey[100],
+                          fontSize: "12px",
+                          fontWeight: "bold",
+                          margin: "5px"
+                        }
+                        }><Edit/></Button>
+                        <Button
+                        onClick={e => handleDelete(row.id_proveedor)}
+                        sx={{
+                          backgroundColor: colors.redAccent[700],
+                          color: colors.grey[100],
+                          fontSize: "12px",
+                          fontWeight: "bold",
+                        }
+                        }><Delete/></Button>
+                    </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </Box>
     </Box>
   );

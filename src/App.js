@@ -34,6 +34,7 @@ import Edit_Client from "./scenes/clients/edit_client";
 import Categories from "./scenes/categories";
 import New_Category from "./scenes/categories/new_category";
 import Edit_Category from "./scenes/categories/edit_category";
+import Edit_Provider from "./scenes/providers/edit_provider";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -57,6 +58,7 @@ function App() {
               <Route path="/edit_category/:id" element={<Edit_Category />} />
               <Route path="/providers" element={<Providers />} />
               <Route path="/new_provider" element={<New_Provider />} />
+              <Route path="/edit_provider/:id" element={<Edit_Provider />} />
               <Route path="/products" element={<Products />} />
               <Route path="/new_product" element={<New_product />} />
               <Route path="/inventory" element={<Inventario />} />

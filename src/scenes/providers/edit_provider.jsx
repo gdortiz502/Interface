@@ -8,12 +8,14 @@ import { ArrowBack } from "@mui/icons-material";
 import { tokens } from "../../theme";
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import React, {useEffect} from 'react';
 
-const New_Provider = () => {
+const Edit_Provider = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
+  const {id} = useParams();
   const [nit, setNit] = useState('');
   const [nombre, setNombre] = useState('');
   const [correo, setCorreo] = useState('');
@@ -23,7 +25,7 @@ const New_Provider = () => {
 
   function handleSubmit(event){
     event.preventDefault();
-    axios.post('http://localhost:8081/create/proveedores', {nit, nombre, correo, telefono, direccion})
+    axios.put('http://localhost:8081/update/proveedores/'+id, {nit, nombre, correo, telefono, direccion})
     .then(res => {
       console.log(res);
       navigate("/providers");
@@ -39,7 +41,7 @@ const New_Provider = () => {
   return (
     <Box m="20px">
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="NUEVO CLIENTE" subtitle="Bienvenido al modulo de clientes" />
+        <Header title="EDITAR PROVEEDOR" subtitle="Bienvenido al modulo de proveedores" />
 
         <Box>
           <Button
@@ -73,20 +75,20 @@ const New_Provider = () => {
                 "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
               }}
             >
-              <TextField 
-                fullWidth 
-                id="filled-basic" 
+                <TextField
+                fullWidth
+                id="filled-basic"
                 label="NIT"
-                type="text" 
+                type="text"
                 variant="filled"
                 onChange={e => setNit(e.target.value)}
                 name="nit"
                 sx={{ gridColumn: "span 2" }} />
-                <TextField 
-                fullWidth 
-                id="filled-basic"  
+                <TextField
+                fullWidth
+                id="filled-basic"
                 label="Nombre"
-                type="text" 
+                type="text"
                 variant="filled"
                 onChange={e => setNombre(e.target.value)}
                 name="nombre"
@@ -117,12 +119,11 @@ const New_Provider = () => {
                 variant="filled"
                 onChange={e => setDireccion(e.target.value)}
                 name="direccion"
-                sx={{ gridColumn: "span 4" }} />
-              
+                sx={{ gridColumn: "span 4" }} />            
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
-                CREAR NUEVO CLIENTE
+                EDITAR PROVEEDOR
               </Button>
             </Box>
           </form>
@@ -154,4 +155,4 @@ const initialValues = {
   address2: "",
 };
 
-export default New_Provider;
+export default Edit_Provider;
