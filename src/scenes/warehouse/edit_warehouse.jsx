@@ -8,19 +8,21 @@ import { ArrowBack } from "@mui/icons-material";
 import { tokens } from "../../theme";
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import React, {useEffect} from 'react';
 
-const New_Warehouse = () => {
+const Edit_Warehouse = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
+  const {id} = useParams();
   const [nombre, setNombre] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const navigate = useNavigate();
 
   function handleSubmit(event){
     event.preventDefault();
-    axios.post('http://localhost:8081/create/bodegas', {nombre, descripcion})
+    axios.put('http://localhost:8081/update/bodegas/'+id, {nombre, descripcion})
     .then(res => {
       console.log(res);
       navigate("/warehouse");
@@ -36,7 +38,7 @@ const New_Warehouse = () => {
   return (
     <Box m="20px">
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="NUEVA BODEGA" subtitle="Bienvenido al modulo de bodegas" />
+        <Header title="EDITAR BODEGA" subtitle="Bienvenido al modulo de bodegas" />
 
         <Box>
           <Button
@@ -91,7 +93,7 @@ const New_Warehouse = () => {
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
-                CREAR NUEVA CATEGORIA
+                EDITAR BODEGA
               </Button>
             </Box>
           </form>
@@ -123,4 +125,4 @@ const initialValues = {
   address2: "",
 };
 
-export default New_Warehouse;
+export default Edit_Warehouse;
