@@ -2,9 +2,11 @@ import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, Ta
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
-import { Add, Delete, Edit } from "@mui/icons-material";
-import React, { useEffect, useState } from 'react';
+import { Add, Delete, Edit, PictureAsPdf } from "@mui/icons-material";
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
+
+import { useReactToPrint } from "react-to-print";
 
 const Categories = () => {
   const theme = useTheme();
@@ -12,11 +14,19 @@ const Categories = () => {
 
   const [clients, setClient] = useState([])
 
+  const componentPDF = useRef();
+
   useEffect(() => {
     axios.get('http://localhost:8081/get/categorias')
     .then(res => setClient(res.data))
     .catch(err => console.log(err));
   }, [])
+
+  const generatePDF = useReactToPrint({
+    content: () => componentPDF.current,
+    documentTitle: "Categorias",
+    onAfterPrint: ()=> alert("Documento guardado en PDF")
+  });
 
   const handleDelete = async(id) => {
     try {
@@ -50,52 +60,63 @@ const Categories = () => {
         </Box>
       </Box>
       <Box>
-        <TableContainer>
-          <Table sx={{minWidth:650}} aria-label="a dense table">
-            <TableHead>
-              <TableRow>
-                <TableCell>ID</TableCell>
-                <TableCell>Descripcion</TableCell>
-                <TableCell>Estatus</TableCell>
-                <TableCell>Acciones</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {clients.map((row) => (
-                <TableRow
-                  key={row.nombre}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                    <TableCell>{row.id_categoria}</TableCell>
-                    <TableCell>{row.descripcion}</TableCell>
-                    <TableCell>
-                      {row.estatus == 1 ? 'Activo' : 'Inactivo'}
-                    </TableCell>
-                    <TableCell>
-                      <Button
-                        href= {`/edit_category/${row.id_categoria}`}
-                        sx={{
-                          backgroundColor: colors.greenAccent[700],
-                          color: colors.grey[100],
-                          fontSize: "12px",
-                          fontWeight: "bold",
-                          margin: "5px"
-                        }
-                        }><Edit/></Button>
-                        <Button
-                        onClick={e => handleDelete(row.id_categoria)}
-                        sx={{
-                          backgroundColor: colors.redAccent[700],
-                          color: colors.grey[100],
-                          fontSize: "12px",
-                          fontWeight: "bold",
-                        }
-                        }><Delete/></Button>
-                    </TableCell>
+        <div ref={componentPDF} style={{width: '100%', '.texto':{color: "#000000"}}}>
+          <TableContainer>
+            <Table sx={{minWidth:650}} aria-label="a dense table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>ID</TableCell>
+                  <TableCell>Descripcion</TableCell>
+                  <TableCell>Estatus</TableCell>
+                  <TableCell>Acciones</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              </TableHead>
+              <TableBody>
+                {clients.map((row) => (
+                  <TableRow
+                    key={row.nombre}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                      <TableCell className="texto">{row.id_categoria}</TableCell>
+                      <TableCell className="texto">{row.descripcion}</TableCell>
+                      <TableCell>
+                        {row.estatus == 1 ? 'Activo' : 'Inactivo'}
+                      </TableCell>
+                      <TableCell>
+                        <Button
+                          href= {`/edit_category/${row.id_categoria}`}
+                          sx={{
+                            backgroundColor: colors.greenAccent[700],
+                            color: colors.grey[100],
+                            fontSize: "12px",
+                            fontWeight: "bold",
+                            margin: "5px"
+                          }
+                          }><Edit/></Button>
+                          <Button
+                          onClick={e => handleDelete(row.id_categoria)}
+                          sx={{
+                            backgroundColor: colors.redAccent[700],
+                            color: colors.grey[100],
+                            fontSize: "12px",
+                            fontWeight: "bold",
+                          }
+                          }><Delete/></Button>
+                      </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </div>
+        <Button
+          onClick={ generatePDF }
+          sx={{
+            backgroundColor: colors.redAccent[700],
+            color: colors.grey[100],
+            fontSize: "12px",
+            fontWeight: "bold",
+          }
+          }><PictureAsPdf/> Export PDF</Button>
       </Box>
     </Box>
   );
