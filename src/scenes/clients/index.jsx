@@ -2,21 +2,32 @@ import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, Ta
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
-import { Add, Delete, Edit } from "@mui/icons-material";
-import React, { useEffect, useState } from 'react';
+import { Add, Delete, Edit, PictureAsPdf, TableView } from "@mui/icons-material";
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
+
+import { useReactToPrint } from "react-to-print";
+import { CSVLink } from 'react-csv'
 
 const Clients = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const [clients, setClient] = useState([])
+  const [clients, setClient] = useState([]);
+
+  const componentPDF = useRef();
 
   useEffect(() => {
     axios.get('http://localhost:8081/get/clientes')
     .then(res => setClient(res.data))
     .catch(err => console.log(err));
   }, [])
+
+  const generatePDF = useReactToPrint({
+    content: () => componentPDF.current,
+    documentTitle: "Clientes",
+    onAfterPrint: ()=> alert("Documento guardado en PDF")
+  });
 
   const handleDelete = async(id) => {
     try {
@@ -26,6 +37,8 @@ const Clients = () => {
       console.log(err);
     }
   }
+
+  
 
   return (
     <Box m="20px">
@@ -50,6 +63,7 @@ const Clients = () => {
         </Box>
       </Box>
       <Box>
+        <div ref={componentPDF}>
         <TableContainer>
           <Table sx={{minWidth:650}} aria-label="a dense table">
             <TableHead>
@@ -100,6 +114,25 @@ const Clients = () => {
             </TableBody>
           </Table>
         </TableContainer>
+        </div>
+        <Button
+          onClick={ generatePDF }
+          sx={{
+            backgroundColor: colors.redAccent[700],
+            color: colors.grey[100],
+            fontSize: "12px",
+            fontWeight: "bold",
+          }
+          }><PictureAsPdf/> Export PDF</Button>
+          
+          <Button
+          sx={{
+            backgroundColor: colors.greenAccent[700],
+            color: colors.grey[100],
+            fontSize: "12px",
+            fontWeight: "bold",
+          }
+          }><TableView/> <CSVLink data={clients} filename="clientes" style={{color: "#fff", textDecoration: "none"}}>Exportar CSV</CSVLink></Button>
       </Box>
     </Box>
   );

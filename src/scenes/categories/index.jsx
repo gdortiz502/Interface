@@ -2,11 +2,12 @@ import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, Ta
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
-import { Add, Delete, Edit, PictureAsPdf } from "@mui/icons-material";
+import { Add, Delete, Edit, PictureAsPdf, TableView } from "@mui/icons-material";
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 
 import { useReactToPrint } from "react-to-print";
+import { CSVLink } from 'react-csv'
 
 const Categories = () => {
   const theme = useTheme();
@@ -62,7 +63,7 @@ const Categories = () => {
       <Box>
         <div ref={componentPDF} style={{width: '100%', '.texto':{color: "#000000"}}}>
           <TableContainer>
-            <Table sx={{minWidth:650}} aria-label="a dense table">
+            <Table sx={{minWidth:650}} aria-label="a dense table" id="tableExport">
               <TableHead>
                 <TableRow>
                   <TableCell>ID</TableCell>
@@ -117,6 +118,15 @@ const Categories = () => {
             fontWeight: "bold",
           }
           }><PictureAsPdf/> Export PDF</Button>
+          
+          <Button
+          sx={{
+            backgroundColor: colors.greenAccent[700],
+            color: colors.grey[100],
+            fontSize: "12px",
+            fontWeight: "bold",
+          }
+          }><TableView/> <CSVLink data={clients} filename="categorias" style={{color: "#fff", textDecoration: "none"}}>Exportar CSV</CSVLink></Button>
       </Box>
     </Box>
   );
