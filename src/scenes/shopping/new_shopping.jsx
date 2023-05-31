@@ -4,13 +4,33 @@ import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
-import { Add, ArrowBack, DownloadDoneOutlined } from "@mui/icons-material";
+import { ArrowBack } from "@mui/icons-material";
 import { tokens } from "../../theme";
+import { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const New_shopping = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
+  const [documento, setDocumento] = useState('');
+  const [nombre, setNombre] = useState('');
+  const [descripcion, setDescripcion] = useState('');
+  const [precio, setPrecio] = useState('');
+  const [cantidad, setCantidad] = useState('');
+  const [bodega, setBodega] = useState('');
+  const navigate = useNavigate();
+
+  function handleSubmit(event){
+    event.preventDefault();
+    axios.post('http://localhost:8081/create/compras', {documento, nombre, descripcion, precio, cantidad, bodega})
+    .then(res => {
+      console.log(res);
+      navigate("/shopping");
+    }).catch(err => console.log(err));
+  }
+  
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
   const handleFormSubmit = (values) => {
@@ -20,7 +40,7 @@ const New_shopping = () => {
   return (
     <Box m="20px">
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="NUEVA COMPRA" subtitle="Bienvenido al modulo de compras" />
+        <Header title="NUEVA SALIDA" subtitle="Bienvenido al modulo de salida de mercaderia" />
 
         <Box>
           <Button
@@ -45,15 +65,7 @@ const New_shopping = () => {
         initialValues={initialValues}
         validationSchema={checkoutSchema}
       >
-        {({
-          values,
-          errors,
-          touched,
-          handleBlur,
-          handleChange,
-          handleSubmit,
-        }) => (
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} method="post">
             <Box
               display="grid"
               gap="30px"
@@ -62,79 +74,68 @@ const New_shopping = () => {
                 "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
               }}
             >
-              <TextField
-                fullWidth
+              <TextField 
+                fullWidth 
+                id="filled-basic" 
+                label="Documento"
+                type="text" 
                 variant="filled"
-                type="text"
-                label="NIT"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.firstName}
-                name="firstName"
-                error={!!touched.firstName && !!errors.firstName}
-                helperText={touched.firstName && errors.firstName}
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
+                onChange={e => setDocumento(e.target.value)}
+                name="Documento"
+                sx={{ gridColumn: "span 2" }} />
+                <TextField 
+                fullWidth 
+                id="filled-basic"  
+                label="Nombre"
+                type="text" 
                 variant="filled"
-                type="text"
-                label="NOMBRE"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.lastName}
-                name="lastName"
-                error={!!touched.lastName && !!errors.lastName}
-                helperText={touched.lastName && errors.lastName}
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
+                onChange={e => setNombre(e.target.value)}
+                name="nombre"
+                sx={{ gridColumn: "span 2" }} />
+                <TextField 
+                fullWidth 
+                id="filled-basic" 
+                label="Descripcion"
+                type="text" 
                 variant="filled"
-                type="text"
-                label="CORREO"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.email}
-                name="email"
-                error={!!touched.email && !!errors.email}
-                helperText={touched.email && errors.email}
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
+                onChange={e => setDescripcion(e.target.value)}
+                name="Descripcion"
+                sx={{ gridColumn: "span 2" }} />
+                <TextField 
+                fullWidth 
+                id="filled-basic" 
+                label="precio"
+                type="text" 
                 variant="filled"
-                type="text"
-                label="TELEFONO"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.contact}
-                name="contact"
-                error={!!touched.contact && !!errors.contact}
-                helperText={touched.contact && errors.contact}
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
+                onChange={e => setPrecio(e.target.value)}
+                name="precio"
+                sx={{ gridColumn: "span 2" }} />
+                <TextField 
+                fullWidth 
+                id="filled-basic" 
+                label="Cantidad"
+                type="text" 
                 variant="filled"
-                type="text"
-                label="DIRECCION"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.address1}
-                name="address1"
-                error={!!touched.address1 && !!errors.address1}
-                helperText={touched.address1 && errors.address1}
-                sx={{ gridColumn: "span 4" }}
-              />
+                onChange={e => setCantidad(e.target.value)}
+                name="Cantidad"
+                sx={{ gridColumn: "span 4" }} />
+                 <TextField     
+                fullWidth 
+                id="filled-basic" 
+                label="Bodega"
+                type="text" 
+                variant="filled"
+                onChange={e => setBodega(e.target.value)}
+                name="Bodega"
+                sx={{ gridColumn: "span 4" }} />
+
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
-                CREAR NUEVO PROVEEDOR
+                CREAR NUEVA SALIDA
               </Button>
             </Box>
           </form>
-        )}
       </Formik>
     </Box>
   );
@@ -144,15 +145,15 @@ const phoneRegExp =
   /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
 
 const checkoutSchema = yup.object().shape({
-  firstName: yup.string().required("requerido"),
-  lastName: yup.string().required("required"),
-  email: yup.string().email("invalid email").required("required"),
+  firstName: yup.string().required("Requerido"),
+  lastName: yup.string().required("Requerido"),
+  email: yup.string().email("Correo invalido").required("Requerido"),
   contact: yup
     .string()
-    .matches(phoneRegExp, "Phone number is not valid")
-    .required("required"),
-  address1: yup.string().required("required"),
-  address2: yup.string().required("required"),
+    .matches(phoneRegExp, "El numero de telefono no es valido")
+    .required("Requerido"),
+  address1: yup.string().required("Requerido"),
+  address2: yup.string().required("Requerido"),
 });
 const initialValues = {
   firstName: "",

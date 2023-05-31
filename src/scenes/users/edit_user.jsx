@@ -8,25 +8,27 @@ import { ArrowBack } from "@mui/icons-material";
 import { tokens } from "../../theme";
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import React, {useEffect} from 'react';
 
-const New_inventory = () => {
+const Edit_user = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const [Codigo, setCodigo] = useState('');
-  const [Descripcion, setDescripcion] = useState('');
-  const [Preciodecompra, setPreciodecompra] = useState('');
-  const [Bodega, setBodega] = useState('');
-  const [Existencia, setExistencia] = useState('');
+  const {id} = useParams();
+  const [nit, setNit] = useState('');
+  const [nombre, setNombre] = useState('');
+  const [correo, setCorreo] = useState('');
+  const [telefono, setTelefono] = useState('');
+  const [direccion, setDireccion] = useState('');
   const navigate = useNavigate();
 
   function handleSubmit(event){
     event.preventDefault();
-    axios.post('http://localhost:8081/create/inventario', {Codigo, Descripcion, Preciodecompra, Bodega, Existencia})
+    axios.put('http://localhost:8081/update/usuarios/'+id, {nit, nombre, correo, telefono, direccion})
     .then(res => {
       console.log(res);
-      navigate("/inventory");
+      navigate("/users");
     }).catch(err => console.log(err));
   }
   
@@ -36,14 +38,22 @@ const New_inventory = () => {
     console.log(values);
   };
 
+  const [Users, setUsers] = useState([])
+
+  useEffect(() => {
+    axios.get('http://localhost:8081/get/usuarios/' + id)
+    .then(res => setUsers(res.data))
+    .catch(err => console.log(err));
+  }, [])
+
   return (
     <Box m="20px">
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="NUEVO INVENTARIO" subtitle="Bienvenido al modulo de inventario" />
+        <Header title="EDITAR USUARIOS" subtitle="Bienvenido al modulo de usuarios" />
 
         <Box>
           <Button
-            href="/inventory"
+            href="/users"
             sx={{
               backgroundColor: colors.blueAccent[700],
               color: colors.grey[100],
@@ -73,56 +83,55 @@ const New_inventory = () => {
                 "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
               }}
             >
-              <TextField 
-                fullWidth 
-                id="filled-basic" 
-                label="Codigo"
-                type="text" 
+                <TextField
+                fullWidth
+                id="filled-basic"
+                label="NIT"
+                type="text"
                 variant="filled"
-                onChange={e => setCodigo(e.target.value)}
-                name="Codigo"
+                onChange={e => setNit(e.target.value)}
+                name="nit"
                 sx={{ gridColumn: "span 2" }} />
-                <TextField 
-                fullWidth 
-                id="filled-basic"  
-                label="Descripcion"
-                type="text" 
+                <TextField
+                fullWidth
+                id="filled-basic"
+                label="Nombre"
+                type="text"
                 variant="filled"
-                onChange={e => setDescripcion(e.target.value)}
-                name="Descripcion"
-                sx={{ gridColumn: "span 2" }} />
-                <TextField 
-                fullWidth 
-                id="filled-basic" 
-                label="Precio de compra"
-                type="text" 
-                variant="filled"
-                onChange={e => setPreciodecompra(e.target.value)}
-                name="Precio de compra"
+                onChange={e => setNombre(e.target.value)}
+                name="nombre"
                 sx={{ gridColumn: "span 2" }} />
                 <TextField 
                 fullWidth 
                 id="filled-basic" 
-                label="Bodega"
+                label="Correo"
                 type="text" 
                 variant="filled"
-                onChange={e => setBodega(e.target.value)}
-                name="Bodega"
+                onChange={e => setCorreo(e.target.value)}
+                name="correo"
                 sx={{ gridColumn: "span 2" }} />
                 <TextField 
                 fullWidth 
                 id="filled-basic" 
-                label="Existencia"
+                label="Telefono"
                 type="text" 
                 variant="filled"
-                onChange={e => setExistencia(e.target.value)}
-                name="Existencia"
-                sx={{ gridColumn: "span 4" }} />
-              
+                onChange={e => setTelefono(e.target.value)}
+                name="telefono"
+                sx={{ gridColumn: "span 2" }} />
+                <TextField 
+                fullWidth 
+                id="filled-basic" 
+                label="Direccion"
+                type="text" 
+                variant="filled"
+                onChange={e => setDireccion(e.target.value)}
+                name="direccion"
+                sx={{ gridColumn: "span 4" }} />            
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
-                CREAR NUEVO INVENTARIO
+                EDITAR CLIENTE
               </Button>
             </Box>
           </form>
@@ -154,4 +163,4 @@ const initialValues = {
   address2: "",
 };
 
-export default New_inventory;
+export default Edit_user;
